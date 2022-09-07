@@ -13,22 +13,13 @@ def get_solutions():
 	html_str = raw.read().decode("utf-8")
 	raw.close()
 
-	pattern = "https://www.nytimes.com/games-assets/v2/wordle\..*\.js"
+	pattern = 'https://www.nytimes.com/games-assets/v2/wordle\.[A-Za-z0-9_-]*\.js'
 
-	results = re.findall(pattern, html_str)
-	for r in results:
-		try:
-			fp = urllib.request.urlopen(r)
-		except:
-			continue
+	url = re.search(pattern, html_str).group(0)
 
-
-		m = re.match('^'+pattern+'$', r)
-		if m:
-			raw = urllib.request.urlopen(r)
-			js_str = raw.read().decode("utf-8")
-			raw.close()
-			break
+	raw = urllib.request.urlopen(url)
+	js_str = raw.read().decode("utf-8")
+	raw.close()
 
 	js_lst = js_str.split('[')
 	for l in js_lst:
