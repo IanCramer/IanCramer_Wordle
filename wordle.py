@@ -6,9 +6,15 @@ from words import *
 
 class Wordle():
 
-	def __init__(self):
-		self.answer = random.choice(WORDS)
+	def __init__(self, answer=None):
+		if answer in WORDS:
+			self.answer = answer
+		else:
+			self.answer = real_world_wordle_word()
 		self.over = False
+
+	def random(self):
+		self.answer = random.choice(WORDS)
 
 	def guess(self, g):
 		if self.over:
@@ -17,9 +23,8 @@ class Wordle():
 		g = g.lower()
 		if g == self.answer:
 			self.over = True
-			print("You Win!")
 
-		print(self.feedback(g))
+		return(self.feedback(g, self.answer))
 
 	def feedback(self, g, a):
 		feedback = ''
@@ -39,22 +44,37 @@ class Wordle():
 		return feedback
 
 
-def main():
-	game = Wordle()
 
-	for i in range(6):
-		guess = input("Your Guess: ")
-		game.guess(guess)
-		print()
-		if game.over:
-			return
+	def play(self):
+		for i in range(6):
+			guess = self.get_guess(i)
+			print(self.guess(guess), '\n')
+			if self.over:
+				print("You Win")
+				return
 
-	print("You Lost :(")
-	print("The Answer Was:". game.answer)
+		print("You Lost :(")
+		print("The Answer Was:". self.answer)
+
+
+	def get_guess(self, i):
+		while True:
+			g = input(f"Your Guess ({i+1}): ")
+			if g in WORDS or g in OTHER:
+				return g
+			print("Invalid Guess")
+
+
 
 if __name__ == '__main__':
-	g = Wordle()
-	guess = input("Guess: ")
-	g.guess(guess)
-	
-	main()
+	wordle = Wordle()
+	wordle.play()
+
+
+
+
+
+
+
+
+

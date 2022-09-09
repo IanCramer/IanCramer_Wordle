@@ -102,25 +102,17 @@ def main():
 			# Attempt a faster method by parsing json
 			s_dict = s_dict[g][h]
 			best = list(s_dict.keys())[0]
-			lucky = s.get_lucky([best])
 			print("JSON")
 		except:
 			# If parsing json didn't work, compute best next guess
-			best, lucky = s.best_guess()
+			best = s.best_guess()
 			print("Computed")
 
 		# Show Best Guess
 		print("The best next guess is: ", best)
 
-		# Lucky Guess?
-		if lucky != best:
-			print("The lucky next guess is: ", lucky)
-
 
 
 
 if __name__ == '__main__':
-	try:
-		auto_solver(sys.argv[1])
-	except:
-		auto_solver()
+	main()

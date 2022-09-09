@@ -21,16 +21,20 @@ def get_solutions():
 	js_str = raw.read().decode("utf-8")
 	raw.close()
 
-	js_lst = js_str.split('[')
-	for l in js_lst:
-		if '"cigar"' in l:
-			l = l.replace('"', '')
-			s = l[:-6].split(',')
-			break
+	pattern = '\[[a-z\", ]{5,}\]'
+	results = re.findall(pattern, js_str)
 
-	return s
+	s = results[0][1:-1]
+	s = s.replace('"', '')
+	s = s.split(',')
 
-SOLUTIONS = get_solutions()
+	o = results[1][1:-1]
+	o = o.replace('"', '')
+	o = o.split(',')
+
+	return s,o
+
+SOLUTIONS, OTHER = get_solutions()
 
 WORDS = sorted(SOLUTIONS)
 
