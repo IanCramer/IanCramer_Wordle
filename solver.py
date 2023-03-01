@@ -1,10 +1,12 @@
 from words import *
 from wordle import Wordle
+from datetime import datetime as dt
 
 class Solver:
 	def __init__(self):
 		self.solutions = SOLUTIONS[:]
 		self.guessed = {}
+		self.wordle = Wordle()
 
 
 
@@ -12,13 +14,13 @@ class Solver:
 		g_scores = {}
 		for g in WORDS:
 			g_scores[g] = self.score_guess(g)
-		
-		w = best = min(g_scores, key=g_scores.get)
-		while w not in self.solutions:
-			g_scores[w] = float('inf')
-			w = min(g_scores, key=g_scores.get)
+		# Best next guess
+		best = min(g_scores, key=g_scores.get)
+		# Get best hard mode
+		solution_g_scores = {w: g_scores[w] for w in self.solutions}
+		best_hard = min(solution_g_scores, key=solution_g_scores.get)
 
-		return best, w
+		return best, best_hard
 
 
 	def score_guess(self, g):
@@ -29,7 +31,7 @@ class Solver:
 			f = self.feedback(g, a)
 			if f not in f_score:
 				f_score[f] = len(self.prune(g, f))
-			g_score += f_score[f]
+			g_score += f_score[f] 
 		return g_score
 
 
@@ -102,22 +104,25 @@ class Solver:
 
 
 	def auto_solve(self, answer=None):
-		wordle = Wordle(answer)
+		self.wordle = Wordle(answer)
 
 		g = 'raise' # self.best_guess()
-		while not wordle.over:
-			f = wordle.guess(g)
+		while not self.wordle.over:
+			f = self.wordle.guess(g)
 			print(g, f)
 
 			self.implement_guess(g, f)
-			g = self.best_guess()
+			g,h = self.best_guess()
 
 
 
 
 if __name__ == '__main__':
-	solver = Solver()
-	solver.auto_solve()
+	for w in SOLUTIONS:
+		print("Solution is:", w)
+		solver = Solver()
+		solver.auto_solve(w)
+		print("================================================")
 
 
 
