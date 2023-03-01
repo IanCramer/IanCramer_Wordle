@@ -12,9 +12,13 @@ class Solver:
 		g_scores = {}
 		for g in WORDS:
 			g_scores[g] = self.score_guess(g)
-		best = min(g_scores, key=g_scores.get)
+		
+		w = best = min(g_scores, key=g_scores.get)
+		while w not in self.solutions:
+			g_scores[w] = float('inf')
+			w = min(g_scores, key=g_scores.get)
 
-		return best
+		return best, w
 
 
 	def score_guess(self, g):
@@ -107,9 +111,6 @@ class Solver:
 
 			self.implement_guess(g, f)
 			g = self.best_guess()
-
-
-
 
 
 

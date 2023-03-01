@@ -76,7 +76,7 @@ def main():
 		g = input("Your Guess: ")
 		h = input("Hint Received: ")
 
-		s.implement_guess(g)
+		s.implement_guess(g, h)
 
 		n = len(s.solutions)
 		if n == 0:

@@ -10,7 +10,10 @@ class Wordle():
 		if answer in WORDS:
 			self.answer = answer
 		else:
-			self.answer = real_world_wordle_word()
+			try:
+				self.answer = real_world_wordle_word()
+			except:
+				self.answer = random.choice(SOLUTIONS)
 		self.over = False
 
 	def random(self):
@@ -24,7 +27,7 @@ class Wordle():
 		if g == self.answer:
 			self.over = True
 
-		return(self.feedback(g, self.answer))
+		return self.feedback(g, self.answer)
 
 	def feedback(self, g, a):
 		feedback = ''
